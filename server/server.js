@@ -2,11 +2,12 @@ require("dotenv").config()
 const express = require('express')
 const morgan = require('morgan')
 const db = require('./db')
+const cors = require('cors')
 
 const app = express()
 const PORT = process.env.PORT || 4000
 
-
+app.use(cors({ origin: 'http://localhost:3000' }))
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -35,7 +36,7 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
         res.status(201).json({
             status: "Success",
             data: {
-                restaurant: results.rows
+                restaurant: results.rows[0]
             }
         })
     } catch (err) {
@@ -51,7 +52,9 @@ app.post("/api/v1/restaurants", async (req, res) => {
 
         res.status(201).json({
             status: "Success",
-            restaurant: results.rows
+            data: {
+                restaurant: results.rows[0]
+            }
         })
     } catch (err) {
         console.error(err.message);
@@ -67,7 +70,9 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
 
         res.status(201).json({
             status: "Success",
-            restaurant: results.rows
+            data: {
+                restaurant: results.rows[0]
+            }
         })
     } catch (err) {
         console.error(err.message);
