@@ -3,25 +3,25 @@ import RestaurantFinder from '../apis/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
 
 const AddRestaurant = () => {
-	const { addRestaurants } = useContext(RestaurantsContext);
-	const [name, setName] = useState("")
-	const [location, setLocation] = useState("")
-	const [priceRange, setPriceRange] = useState("")
+	const { addRestaurants } = useContext(RestaurantsContext)
+	const [name, setName] = useState('')
+	const [location, setLocation] = useState('')
+	const [priceRange, setPriceRange] = useState('')
 
 	const handleSubmit = async (e) => {
-		e.preventDefault();
+		e.preventDefault()
 		try {
-			const response = await RestaurantFinder.post("/", {
+			const response = await RestaurantFinder.post('/', {
 				name,
 				location,
 				price_range: priceRange,
-			});
-			console.log(response.data.data.restaurant);
-			addRestaurants(response.data.data.restaurant);
+			})
+			console.log(response.data.data.restaurant)
+			addRestaurants(response.data.data.restaurant)
 		} catch (err) {
-			console.log(err);
+			console.log(err)
 		}
-	};
+	}
 
 	return (
 		<div className='mb-4'>
@@ -30,7 +30,7 @@ const AddRestaurant = () => {
 					<div className='col'>
 						<input
 							value={name}
-							onChange={e => setName(e.target.value)}
+							onChange={(e) => setName(e.target.value)}
 							type='text'
 							className='form-control'
 							placeholder='name'
@@ -39,14 +39,15 @@ const AddRestaurant = () => {
 					<div className='col'>
 						<input
 							value={location}
-							onChange={e => setLocation(e.target.value)}
+							onChange={(e) => setLocation(e.target.value)}
 							type='text'
 							className='form-control'
 							placeholder='location'
 						/>
 					</div>
 					<div className='col'>
-						<select className='custom-select mr-sm-2'
+						<select
+							className='custom-select mr-sm-2'
 							value={priceRange}
 							onChange={(e) => setPriceRange(e.target.value)}
 						>
@@ -62,7 +63,7 @@ const AddRestaurant = () => {
 					</div>
 					<button
 						onClick={handleSubmit}
-						type="submit"
+						type='submit'
 						className='btn btn-primary'
 					>
 						Add

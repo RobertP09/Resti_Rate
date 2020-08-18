@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import RestaurantFinder from '../apis/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
 
 const RestaurantList = () => {
 	const { restaurants, setRestaurants } = useContext(RestaurantsContext)
@@ -12,25 +12,35 @@ const RestaurantList = () => {
 			try {
 				const response = await RestaurantFinder.get('/')
 				setRestaurants(response.data.data.restaurants)
-			} catch (err) { }
+			} catch (err) {}
 		}
 
 		fetchData()
+		// eslint-disable-next-line
 	}, [])
 
-	const handleDelete = async (id) => {
+	const handleDelete = async (e, id) => {
+		e.stopPropagation()
 		try {
+			// eslint-disable-next-line
 			const response = await RestaurantFinder.delete(`/${id}`)
-			setRestaurants(restaurants.filter(restaurant => {
-				return restaurant.id !== id
-			}))
+			setRestaurants(
+				restaurants.filter((restaurant) => {
+					return restaurant.id !== id
+				})
+			)
 		} catch (err) {
 			console.log(err)
 		}
 	}
 
-	const handleUpdate = async (id) => {
+	const handleUpdate = async (e, id) => {
+		e.stopPropagation()
 		history.push(`/restaurants/${id}/update`)
+	}
+
+	const handleRestaurantSelect = (id) => {
+		history.push(`/restaurants/${id}`)
 	}
 
 	return (
@@ -47,18 +57,44 @@ const RestaurantList = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{restaurants && restaurants.map(restaurant => {
-						return (
-							<tr key={restaurant.id}>
-								<td>{restaurant.name}</td>
-								<td>{restaurant.location}</td>
-								<td>{"$".repeat(restaurant.price_range)}</td>
-								<td>reviews</td>
-								<td><button onClick={() => handleUpdate(restaurant.id)} className='btn btn-warning'>Update</button></td>
-								<td><button onClick={() => handleDelete(restaurant.id)} className='btn btn-danger'>Delete</button></td>
-							</tr>
-						)
-					})}
+					{restaurants &&
+						restaurants.map((restaurant) => {
+							return (
+								<tr
+									onClick={() =>
+										handleRestaurantSelect(restaurant.id)
+									}
+									key={restaurant.id}
+								>
+									<td>{restaurant.name}</td>
+									<td>{restaurant.location}</td>
+									<td>
+										{'$'.repeat(restaurant.price_range)}
+									</td>
+									<td>reviews</td>
+									<td>
+										<button
+											onClick={(e) =>
+												handleUpdate(e, restaurant.id)
+											}
+											className='btn btn-warning'
+										>
+											Update
+										</button>
+									</td>
+									<td>
+										<button
+											onClick={(e) =>
+												handleDelete(e, restaurant.id)
+											}
+											className='btn btn-danger'
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							)
+						})}
 				</tbody>
 			</table>
 		</div>
