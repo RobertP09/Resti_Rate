@@ -2,10 +2,12 @@
 	"name": "server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "server.js",
 	"scripts": {
-		"client": "cd ../ && npm start --prefix client",
+		"start": "node server.js",
 		"server": "nodemon server.js",
+		"clientInstall": "cd ../ && npm install --prefix client",
+		"client": "cd ../ && npm start --prefix client",
 		"dev": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"keywords": [],

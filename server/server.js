@@ -15,11 +15,16 @@ app.use(morgan("common", { stream: accessLogStream }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/api/v1/restaurants', require('./routes/restaurants'))
+if (process.env.NODE_ENV === "production") {
+    // Set static folder
+    app.use(express.static("client/build"))
 
-app.all('*', (req, res) => {
-    res.redirect('/api/v1/restaurants');
-})
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve("../", "client", "build", "index.html"))
+    })
+}
+
+app.use('/api/v1/restaurants', require('./routes/restaurants'))
 
 app.listen(PORT, () => {
     console.log(`Live @ http://localhost:${PORT}`);
