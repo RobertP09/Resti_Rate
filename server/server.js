@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
     })
 }
 
-app.use('v1/restaurants', require('./routes/restaurants'))
+app.use('/v1/restaurants', require('./routes/restaurants'))
 
 app.listen(PORT, () => {
     console.log(`Live @ http://localhost:${PORT}`);
